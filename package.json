@@ -1,0 +1,25 @@
+{
+  "name": "qa-junior-02521-2025-472.871.838-70",
+  "version": "1.0.0",
+  "description": "Este projeto implementa um sistema de HelpDesk para triagem de tickets de suporte, calculando a urgência (SLA) baseada em regras de negócio definidas.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SENAI-SD/qa-junior-02521-2025-472.871.838-70.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SENAI-SD/qa-junior-02521-2025-472.871.838-70/issues"
+  },
+  "homepage": "https://github.com/SENAI-SD/qa-junior-02521-2025-472.871.838-70#readme"
+}

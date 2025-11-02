@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PriorityFlow - Gestor de Prioridade</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-container">
+        <div class="main-card">
+            <div class="left-column">
+                <h2>Novo Ticket</h2>
+                <form id="ticketForm">
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input type="text" id="titulo" name="titulo" placeholder="Resumo do problema" required aria-label="Título do ticket">
+                        <div class="error-message" id="tituloError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <textarea id="descricao" name="descricao" placeholder="Descreva o problema em detalhes..." required aria-label="Descrição do problema"></textarea>
+                        <div class="error-message" id="descricaoError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_cliente">Tipo de Cliente</label>
+                        <select id="tipo_cliente" name="tipo_cliente" required aria-label="Tipo de cliente">
+                            <option value="">Selecione...</option>
+                            <option value="GRATUITO">Gratuito</option>
+                            <option value="BASICO">Básico</option>
+                            <option value="PREMIUM">Premium</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="submitBtn">Criar Ticket</button>
+                </form>
+            </div>
+            <div class="separator"></div>
+            <div class="right-column">
+                <div class="dashboard-header">
+                    <div class="header-content">
+                        <h1>Dashboard de Triagem</h1>
+                        <p>Crie e processe tickets para priorização automática.</p>
+                    </div>
+                    <button id="processBtn" role="button" aria-label="Processar fila pendente">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+                        </svg>
+                        Processar Fila Pendente
+                    </button>
+                </div>
+                <div class="queues">
+                    <div class="queue">
+                        <h3>Fila Pendente</h3>
+                        <div id="pendingList" class="ticket-list"></div>
+                    </div>
+                    <div class="queue">
+                        <h3>Fila Classificada</h3>
+                        <div id="classifiedList" class="ticket-list">
+                            <div class="empty-state">
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" fill="#94A3B8" stroke="#1E293B" stroke-width="0.5"/>
+                                </svg>
+                                <p>Nenhum ticket classificado. Clique em 'Processar Fila' para começar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
