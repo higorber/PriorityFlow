@@ -3,18 +3,38 @@
     box-sizing: border-box;
 }
 
+/* CSS Variables */
+:root {
+    --white: #FFFFFF;
+    --dashboard-bg: #F8F9FA;
+    --primary-blue: #007BFF;
+    --tag-critical: #DC3545;
+    --tag-high: #FFC107;
+    --tag-low: #28A745;
+    --text-dark: #1F2937;
+    --text-muted: #6B7280;
+    --card-shadow: 0 4px 10px rgba(31, 41, 55, 0.04);
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 40px;
+}
+
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-family);
     margin: 0;
     padding: 0;
-    background-color: #F6F7F8;
-    color: #1E293B;
+    background-color: var(--dashboard-bg);
+    color: var(--text-dark);
     line-height: 1.5;
 }
 
 .page-container {
     min-height: 100vh;
-    margin: 40px auto;
+    margin: var(--spacing-xxl) auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -22,67 +42,105 @@ body {
 }
 
 .main-card {
-    background-color: #FFFFFF;
+    background-color: var(--white);
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: var(--card-shadow);
     display: flex;
     width: 100%;
     overflow: hidden;
-    padding: 40px;
+    padding: var(--spacing-xxl);
 }
 
 .left-column {
-    width: 340px;
-    flex-shrink: 0;
+    flex: 0 0 33.333%;
+    background-color: var(--white);
+    border-right: 1px solid rgba(31, 41, 55, 0.04);
+    padding-right: var(--spacing-xxl);
 }
 
 .right-column {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background-color: var(--dashboard-bg);
+    padding-left: var(--spacing-xxl);
 }
 
 .separator {
-    width: 1px;
-    background-color: #E9ECEF;
-    margin: 0 40px;
-    flex-shrink: 0;
+    display: none;
+}
+
+/* Logo Header */
+.logo-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(31, 41, 55, 0.04);
+}
+
+.logo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.logo-subtitle {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.2;
 }
 
 /* Typography */
 h1 {
     font-size: 26px;
     font-weight: 700;
-    color: #1E293B;
-    margin: 0 0 8px 0;
+    color: var(--text-dark);
+    margin: 0 0 var(--spacing-sm) 0;
 }
 
 h2 {
     font-size: 22px;
     font-weight: 700;
-    color: #1E293B;
-    margin: 0 0 20px 0;
+    color: var(--text-dark);
+    margin: 0 0 var(--spacing-lg) 0;
 }
 
 h3 {
     font-size: 18px;
     font-weight: 700;
-    color: #1E293B;
-    margin: 0 0 16px 0;
+    color: var(--text-dark);
+    margin: 0 0 var(--spacing-md) 0;
 }
 
 label {
     display: block;
     font-size: 14px;
     font-weight: 600;
-    color: #334155;
-    margin-bottom: 8px;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
 }
 
 .right-column p {
-    color: #6B7280;
+    color: var(--text-muted);
     font-size: 15px;
-    margin: 0 0 16px 0;
+    margin: 0 0 var(--spacing-md) 0;
 }
 
 /* Form styles */
@@ -148,19 +206,19 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
 }
 
 #submitBtn {
-    background-color: #0B63E4;
-    color: #FFFFFF;
+    background-color: var(--primary-blue);
+    color: var(--white);
     height: 48px;
     font-size: 15px;
     width: 100%;
 }
 
 #submitBtn:hover:not(:disabled) {
-    background-color: #084fb5;
+    background-color: #0056b3;
 }
 
 #submitBtn:active {
@@ -172,20 +230,27 @@ button {
     cursor: not-allowed;
 }
 
+#submitBtn:focus {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
 #processBtn {
-    background-color: #6B7280;
-    color: #FFFFFF;
-    padding: 12px 24px;
+    background-color: var(--white);
+    color: var(--primary-blue);
+    border: 1px solid rgba(31, 41, 55, 0.1);
+    padding: var(--spacing-sm) var(--spacing-lg);
     font-size: 14px;
     border-radius: 8px;
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
 }
 
 #processBtn:hover:not(:disabled) {
-    background-color: #4B5563;
+    background-color: var(--text-muted);
+    color: var(--white);
 }
 
 #processBtn:active {
@@ -197,22 +262,38 @@ button {
     cursor: not-allowed;
 }
 
+#processBtn:focus {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
 /* Dashboard header */
 .dashboard-header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 32px;
+    margin-bottom: var(--spacing-lg);
 }
 
 .header-content {
     flex: 1;
 }
 
+.dashboard-header h2 {
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+
+.dashboard-header button {
+    margin-top: 4px;
+}
+
 /* Queues */
 .queues {
     display: flex;
-    gap: 24px;
+    gap: var(--spacing-lg);
     flex: 1;
 }
 
@@ -222,61 +303,88 @@ button {
     flex-direction: column;
 }
 
+.queue h3 {
+    margin-bottom: var(--spacing-lg);
+}
+
 .ticket-list {
     flex: 1;
     min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
 }
 
 /* Ticket cards */
 .ticket-card {
-    background-color: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    position: relative;
+    background-color: var(--white);
+    border: 1px solid rgba(31, 41, 55, 0.1);
+    border-radius: 12px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: var(--card-shadow);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.ticket-card:hover {
+    box-shadow: 0 8px 16px rgba(31, 41, 55, 0.1);
+    transform: translateY(-1px);
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 
 .ticket-title {
     font-size: 16px;
-    font-weight: 700;
-    color: #1E293B;
-    margin-bottom: 4px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
 }
 
 .ticket-client {
     font-size: 14px;
-    color: #6B7280;
+    color: var(--text-muted);
+    margin: 0;
 }
 
 /* Urgency badges */
 .urgency-badge {
-    position: absolute;
-    top: 14px;
-    right: 16px;
-    padding: 4px 10px;
-    border-radius: 999px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     display: flex;
     align-items: center;
+    align-self: flex-start;
+    margin-left: auto;
 }
 
 .urgency-badge.critica {
-    background-color: #E53935;
-    color: #FFFFFF;
+    background-color: var(--tag-critical);
+    color: var(--white);
 }
 
 .urgency-badge.alta {
-    background-color: #FDD835;
-    color: #000000;
+    background-color: var(--tag-high);
+    color: var(--text-dark);
+}
+
+.urgency-badge.media {
+    background-color: var(--tag-high);
+    color: var(--text-dark);
 }
 
 .urgency-badge.baixa {
-    background-color: #43A047;
-    color: #FFFFFF;
+    background-color: var(--tag-low);
+    color: var(--white);
 }
 
 /* Empty state */
@@ -329,18 +437,21 @@ button {
 /* Responsive */
 @media (max-width: 900px) {
     .page-container {
-        margin: 20px auto;
-        padding: 0 20px;
+        margin: var(--spacing-lg) auto;
+        padding: 0 var(--spacing-lg);
     }
 
     .main-card {
         flex-direction: column;
-        padding: 20px;
+        padding: var(--spacing-lg);
     }
 
     .left-column {
+        flex: none;
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: var(--spacing-lg);
+        border-right: none;
+        padding-right: 0;
     }
 
     .separator {
@@ -348,14 +459,14 @@ button {
     }
 
     .right-column {
-        padding: 0;
+        padding-left: 0;
     }
 
     .dashboard-header {
         flex-direction: column;
-        gap: 16px;
+        gap: var(--spacing-md);
         align-items: stretch;
-        margin-bottom: 20px;
+        margin-bottom: var(--spacing-lg);
     }
 
     #processBtn {
@@ -366,7 +477,7 @@ button {
 
     .queues {
         flex-direction: column;
-        gap: 20px;
+        gap: var(--spacing-lg);
     }
 
     .queue {

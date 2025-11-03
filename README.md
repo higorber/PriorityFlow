@@ -1,21 +1,16 @@
 # PriorityFlow - Gestor de Prioridade
 
-Sistema web moderno para triagem automática de tickets de HelpDesk, calculando urgência (SLA) baseada em regras de negócio específicas.
+**Projeto desenvolvido para a Avaliação Prática do Processo Seletivo 02521/2025 - Analista de Qualidade de Software - Júnior**
 
-## 🎨 Interface
+## 1. Configuração e Execução
 
-Layout idêntico à imagem fornecida: duas colunas principais com formulário à esquerda e dashboard de triagem à direita. Design profissional, responsivo e intuitivo.
+### Pré-requisitos
 
-## ⚙️ Tecnologias
+* Node.js >= 18
+* PostgreSQL >= 15
+* Docker (opcional, para ambiente isolado)
 
-- **Backend**: Node.js + Express + PostgreSQL
-- **Frontend**: HTML5, CSS3, JavaScript (vanilla)
-- **Testes**: Jest (unitários) + Playwright (E2E)
-- **Containerização**: Docker + Docker Compose
-
-## 🚀 Instalação e Execução
-
-### Local (Desenvolvimento)
+### Instalação e execução local
 
 ```bash
 # Backend
@@ -23,165 +18,128 @@ cd backend
 npm install
 npm start
 
-# Frontend acessível em http://localhost:3000
+# Frontend
+Acesse http://localhost:3000 no navegador
 ```
 
-### Docker (Produção/Isolamento)
+### Execução via Docker
 
 ```bash
 # Construir e iniciar todos os serviços
 docker-compose up --build
 
-# Ou rodar em background
+# Rodar em background
 docker-compose up -d --build
 
 # Parar e remover containers
 docker-compose down
 
-# Parar e remover containers + volumes (limpa dados)
+# Limpar containers + volumes
 docker-compose down -v
 ```
 
-**Serviços Docker:**
-- **Backend**: Node.js + Express (porta 3000)
-- **Database**: PostgreSQL 15 (porta 5432)
-- **Frontend**: Servido estáticamente pelo backend
-
-**Acesso:**
-- Aplicação: http://localhost:3000
-- PostgreSQL: localhost:5432 (para conexões externas se necessário)
-
-## 🧮 Regras de Negócio (SLA)
-
-A urgência é calculada baseada em uma matriz de decisão que combina palavras-chave na descrição do ticket com o tipo de cliente:
-
-| Cliente   | Palavra Crítica | Palavra Alta | Palavra Média | Nenhuma |
-|-----------|-----------------|--------------|---------------|---------|
-| **Premium** | CRÍTICA        | ALTA        | MÉDIA        | MÉDIA  |
-| **Básico**  | ALTA          | MÉDIA       | BAIXA        | BAIXA  |
-| **Gratuito**| MÉDIA         | BAIXA       | BAIXA        | BAIXA  |
-
-**Palavras-chave** (case-insensitive):
-- **Críticas**: parado, offline, não funciona, down, fora do ar
-- **Altas**: erro, bug, lento, lentidão, falha de acesso
-- **Médias**: dúvida, como fazer, ajuda, orientação
-
-### Teste Manual das Regras SLA
-
-Para testar manualmente:
-1. Crie um ticket com descrição contendo "sistema parado" para cliente PREMIUM
-2. Clique em "Processar Fila Pendente"
-3. Verifique se o ticket aparece na fila classificada com urgência "CRÍTICA" (badge vermelho)
-
-## 📋 Funcionalidades
-
-- ✅ Criar tickets via formulário com validação
-- ✅ Visualizar filas pendente/classificada
-- ✅ Processar fila com cálculo automático de urgência
-- ✅ Interface responsiva com cards e badges coloridos
-- ✅ Estados de carregamento e feedback visual
-- ✅ Acessibilidade (A11y) com labels e ARIA
-
-## 🧮 Regras de Negócio (Matriz de Decisão)
-
-| Cliente   | Palavra Crítica | Palavra Alta | Palavra Média | Nenhuma |
-|-----------|-----------------|--------------|---------------|---------|
-| **Premium** | CRÍTICA        | ALTA        | MÉDIA        | MÉDIA  |
-| **Básico**  | ALTA          | MÉDIA       | BAIXA        | BAIXA  |
-| **Gratuito**| MÉDIA         | BAIXA       | BAIXA        | BAIXA  |
-
-**Palavras-chave** (case-insensitive):
-- **Críticas**: parado, offline, não funciona, down, fora do ar
-- **Altas**: erro, bug, lento, lentidão, falha de acesso
-- **Médias**: dúvida, como fazer, ajuda, orientação
-
-## 🧪 Testes
+### Testes
 
 ```bash
-# Unitários
+# Testes unitários (Backend)
 cd backend && npm test
 
-# E2E
+# Testes de Fumaça (Cypress)
+npm run cypress:open    # Interface gráfica
+npm run cypress:run     # Execução headless (recomendado)
+
+# Testes E2E (Playwright) - Legado
 npx playwright install
 npx playwright test tests/e2e.spec.js
 ```
 
-## 📚 Documentação
+**Nota sobre Cypress:** Os testes de fumaça são executados com banco de dados limpo antes de cada teste para garantir isolamento e consistência. Certifique-se de que o backend esteja rodando na porta 3000.
 
-- **Gherkin Specs**: `docs/gherkin.feature`
-- **Test Plan**: `docs/test-plan.md`
-- **Bug Report**: `docs/bug-report.md`
+---
 
-## 🔧 Melhorias Futuras
+## 2. Decisões de Desenvolvimento
 
-- Validação frontend robusta
-- Autenticação e autorização
-- Framework frontend (React/Vue)
-- Testes de integração
-- Logs e monitoramento
-- Cache e paginação
+* **Linguagem backend**: Node.js + Express
+* **Banco de dados**: PostgreSQL 15
+* **Frontend**: HTML5, CSS3, JavaScript (vanilla)
+* **Estrutura**: Backend separado do frontend, comunicação via API REST
+* **Tratamento de erros frontend**: mensagens amigáveis ao usuário, validação básica de formulário
+* **Processamento de tickets**: lógica central de SLA aplicada no backend, atualiza status e urgência
 
-## 🐛 Bugs Conhecidos
+---
 
-- Validação de campos obrigatórios insuficiente no frontend (permite submissão vazia)
+## 3. Plano de Testes
 
-## 📊 Status dos Requisitos
+### Tipos de testes realizados
 
-- ✅ RQNF1-6, 8-9, 11-16: Implementados
-- ❌ RQNF7: Testes de integração pendentes
-- ❌ RQNF10: SonarQube não executado
+* **Caixa preta**: criação de tickets, processamento de fila, visualização de urgência
+* **Caixa branca**: cobertura da lógica de SLA, testes de funções do backend
+* **Categorias**:
 
-## 📡 API Endpoints
+  * Unitários
+  * E2E
+  * Testes manuais
 
-### POST /api/tickets
-Cria um novo ticket.
+### Estratégia e prioridades
 
-**Payload:**
-```json
-{
-  "titulo": "string",
-  "descricao": "string",
-  "tipo_cliente": "GRATUITO|BASICO|PREMIUM"
-}
+* Validar regras de negócio críticas primeiro (SLA/urgência)
+* Garantir feedback correto ao usuário na interface
+* Testar integração entre frontend e backend
+
+### Bugs identificados manualmente
+
+* Texto “Cen�rio” e caracteres corrompidos: Parece que o encoding do título dos tickets não está sendo tratado corretamente (acentos). Isso precisa ser corrigido para exibir “Cenário” corretamente.
+* Urgência sem destaque de cor: O ticket com urgência MEDIA não está destacando a cor. Cada nível de urgência deve ter sua cor distinta.
+
+---
+
+## 4. Especificações em Gherkin
+
+```gherkin
+Feature: Gestão de Tickets
+  Scenario: Criar ticket PREMIUM com palavra 'parado'
+    Given que estou na tela de gestão
+    When eu criar um ticket PREMIUM com descrição 'sistema parado'
+    And clicar em "Processar Fila Pendente"
+    Then o ticket deve aparecer na lista Classificada com urgência CRITICA
+
+  Scenario: Criar ticket BASICO sem palavras-chave
+    Given que estou na tela de gestão
+    When eu criar um ticket BASICO sem palavras-chave
+    And clicar em "Processar Fila Pendente"
+    Then o ticket deve aparecer na lista Classificada com urgência BAIXA
 ```
 
-**Response (201):**
-```json
-{
-  "id": 1,
-  "titulo": "string",
-  "descricao": "string",
-  "tipo_cliente": "GRATUITO",
-  "status": "PENDENTE",
-  "urgencia_calculada": null,
-  "created_at": "2025-01-01T00:00:00.000Z"
-}
-```
+*Localização da documentação Gherkin:* `docs/gherkin.feature`
 
-### GET /api/tickets
-Retorna todos os tickets ordenados por data de criação (mais recentes primeiro).
+---
 
-**Response (200):**
-```json
-[
-  {
-    "id": 1,
-    "titulo": "string",
-    "descricao": "string",
-    "tipo_cliente": "GRATUITO",
-    "status": "PENDENTE|CLASSIFICADO",
-    "urgencia_calculada": "CRITICA|ALTA|MEDIA|BAIXA",
-    "created_at": "2025-01-01T00:00:00.000Z"
-  }
-]
-```
+## 5. Requisitos Não Atendidos / Melhorias
 
-### POST /api/processar
-Processa todos os tickets pendentes, calculando urgência e movendo para fila classificada.
+* Pontos de melhoria identificados:
 
-**Response (200):**
-```json
-{
-  "message": "Fila processada com sucesso"
-}
-```
+  * Validação de formulário mais robusta
+  * Implementar autenticação/segurança
+  * Integração com frontend framework (React/Vue)
+  * Logs e monitoramento de backend
+  * Requisitos não atendidos:
+
+  * [RQNF10] SonarQube não executado (opcional)
+  * [RQNF7] Testes de integração backend (opcional)
+
+---
+
+## 6. Casos de Teste (Resumido)
+
+* Ticket PREMIUM com palavra "parado" → urgência CRITICA
+* Ticket BASICO com palavra "parado" → urgência ALTA
+* Ticket GRATUITO com palavra "lento" → urgência BAIXA
+* Ticket PREMIUM com "dúvida" e "não funciona" → urgência CRITICA
+* Ticket BASICO sem palavras-chave → urgência BAIXA
+* Ticket PREMIUM com "AJUDA" → urgência MEDIA
+
+---
+
+[https://github.com/SENAI-SD/qa-junior-02521-2025-472.871.838-70]
+
+---

@@ -144,10 +144,12 @@ async function createTicket(event) {
 
         if (!response.ok) throw new Error('Erro ao criar ticket');
 
+        const data = await response.json();
+
         // Limpa formulário
         event.target.reset();
         // Mostra mensagem de sucesso
-        showMessage('Ticket criado com sucesso!', 'success');
+        showMessage(data.message || 'Ticket criado com sucesso!', 'success');
         // Recarrega a lista de tickets
         loadTickets();
     } catch (error) {
@@ -167,6 +169,13 @@ async function processQueue() {
     // Seleciona o botão de processamento
     const processBtn = document.getElementById('processBtn');
 
+    // Verifica se há tickets pendentes
+    const pendingTickets = document.querySelectorAll('#pendingList .ticket-card');
+    if (pendingTickets.length === 0) {
+        showMessage('Não há tickets pendentes para processar.', 'error');
+        return;
+    }
+
     // Desabilita botão e mostra estado de loading
     processBtn.disabled = true;
     processBtn.setAttribute('aria-busy', 'true');
@@ -176,7 +185,7 @@ async function processQueue() {
                 <animate attributeName="stroke-dashoffset" dur="1s" repeatCount="indefinite" values="31.416;0"/>
             </circle>
         </svg>
-        Processando...
+        Processando fila...
     `;
 
     try {

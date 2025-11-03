@@ -12,6 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Set UTF-8 encoding for all responses
+app.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  next();
+});
+
 // Database connection
 const pool = new Pool({
   host: process.env.DB_HOST || 'db',
@@ -46,7 +52,7 @@ app.post('/api/tickets', async (req, res) => {
       'INSERT INTO tickets (titulo, descricao, tipo_cliente) VALUES ($1, $2, $3) RETURNING *',
       [titulo, descricao, tipo_cliente]
     );
-    res.status(201).json(result.rows[0]);
+    res.status(201).json({ message: 'Ticket criado com sucesso!', ticket: result.rows[0] });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao criar ticket' });
@@ -70,6 +76,17 @@ app.post('/api/processar', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao processar fila' });
+  }
+});
+
+// Clear tickets endpoint for testing
+app.delete('/api/tickets/clear', async (req, res) => {
+  try {
+    await pool.query('DELETE FROM tickets');
+    res.json({ message: 'Tickets cleared successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao limpar tickets' });
   }
 });
 

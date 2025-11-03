@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PriorityFlow - Gestor de Prioridade</title>
     <link rel="stylesheet" href="styles.css">
@@ -11,6 +12,19 @@
     <div class="page-container">
         <div class="main-card">
             <div class="left-column">
+                <div class="logo-header">
+                    <div class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="32" height="32" fill="#007BFF"><path d="M487.9 0H24.1C7.7 0-3.2 17.7 6.4 31.1L192 256v192c0 8.8 7.2 16 16 16h96c8.8 0 16-7.2 16-16V256L505.6 31.1C515.2 17.7 504.3 0 487.9 0z"/></svg>
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#1D4ED8"/>
+                            <path d="M2 17L12 22L22 17" stroke="#1D4ED8" stroke-width="2"/>
+                            <path d="M2 12L12 17L22 12" stroke="#1D4ED8" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <div class="logo-title">PriorityFlow</div>
+                        <div class="logo-subtitle">Ticket Triage System</div>
+                    </div>
+                </div>
                 <h2>Novo Ticket</h2>
                 <form id="ticketForm">
                     <div class="form-group">
@@ -26,8 +40,7 @@
                     <div class="form-group">
                         <label for="tipo_cliente">Tipo de Cliente</label>
                         <select id="tipo_cliente" name="tipo_cliente" required aria-label="Tipo de cliente">
-                            <option value="">Selecione...</option>
-                            <option value="GRATUITO">Gratuito</option>
+                            <option value="GRATUITO" selected>Gratuito</option>
                             <option value="BASICO">Básico</option>
                             <option value="PREMIUM">Premium</option>
                         </select>
@@ -57,11 +70,21 @@
                     <div class="queue">
                         <h3>Fila Classificada</h3>
                         <div id="classifiedList" class="ticket-list">
-                            <div class="empty-state">
-                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" fill="#94A3B8" stroke="#1E293B" stroke-width="0.5"/>
-                                </svg>
-                                <p>Nenhum ticket classificado. Clique em 'Processar Fila' para começar.</p>
+                            <!-- Example tickets for styling -->
+                            <div class="ticket-card">
+                                <div class="ticket-title">Sistema completamente parado</div>
+                                <div class="ticket-client">Cliente Premium</div>
+                                <div class="urgency-badge critica">CRÍTICA</div>
+                            </div>
+                            <div class="ticket-card">
+                                <div class="ticket-title">Erro crítico no sistema</div>
+                                <div class="ticket-client">Cliente Básico</div>
+                                <div class="urgency-badge alta">ALTA</div>
+                            </div>
+                            <div class="ticket-card">
+                                <div class="ticket-title">Dúvida sobre funcionalidade</div>
+                                <div class="ticket-client">Cliente Gratuito</div>
+                                <div class="urgency-badge baixa">BAIXA</div>
                             </div>
                         </div>
                     </div>
