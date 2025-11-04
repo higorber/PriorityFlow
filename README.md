@@ -165,6 +165,6 @@ Resumo da análise:
 
 ---
 
-[PriorityFlow](https://github.com/SENAI-SD/qa-junior-02521-2025-472.871.838-70)
+[PriorityFlow](https://github.com/higorber/PriorityFlow)
 
 ---
