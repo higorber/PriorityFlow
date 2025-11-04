@@ -19,6 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const processBtn = document.getElementById('processBtn');
     processBtn.addEventListener('click', processQueue);
+
+    // Adiciona contador de caracteres para o campo título
+    const tituloInput = document.getElementById('titulo');
+    const charCounter = document.getElementById('charCounter');
+    tituloInput.addEventListener('input', () => {
+        const remaining = 40 - tituloInput.value.length;
+        charCounter.textContent = `${remaining} caracteres restantes`;
+    });
 });
 
 /**
@@ -57,6 +65,18 @@ function displayTickets(tickets) {
     const pendingTickets = sortedTickets.filter(ticket => ticket.status === 'PENDENTE');
     const classifiedTickets = sortedTickets.filter(ticket => ticket.status === 'CLASSIFICADO');
 
+    // Ordena tickets classificados por prioridade (CRITICA > ALTA > MEDIA > BAIXA) e depois por data de criação (mais antigos primeiro)
+    const priorityOrder = { 'CRITICA': 4, 'ALTA': 3, 'MEDIA': 2, 'BAIXA': 1 };
+    classifiedTickets.sort((a, b) => {
+        const priorityA = priorityOrder[a.urgencia_calculada] || 0;
+        const priorityB = priorityOrder[b.urgencia_calculada] || 0;
+        if (priorityA !== priorityB) {
+            return priorityB - priorityA; // Maior prioridade primeiro
+        }
+        // Se mesma prioridade, ordena por data de criação (mais antigos primeiro)
+        return new Date(a.created_at) - new Date(b.created_at);
+    });
+
     // Exibe estado vazio na fila classificada se não houver tickets
     if (classifiedTickets.length === 0) {
         classifiedList.innerHTML = `
@@ -69,13 +89,21 @@ function displayTickets(tickets) {
         `;
     }
 
+    // Função auxiliar para truncar título
+    function truncateTitle(title) {
+        if (title.length > 23) {
+            return title.substring(0, 23) + '...';
+        }
+        return title;
+    }
+
     // Renderiza tickets pendentes (sem badge de prioridade)
     pendingTickets.forEach(ticket => {
         const card = document.createElement('div');
         card.className = 'ticket-card';
         card.innerHTML = `
             <div>
-                <div class="ticket-title">${ticket.titulo}</div>
+                <div class="ticket-title">${truncateTitle(ticket.titulo)}</div>
                 <div class="ticket-client">Cliente: ${ticket.tipo_cliente.charAt(0).toUpperCase() + ticket.tipo_cliente.slice(1).toLowerCase()}</div>
             </div>
         `;
@@ -88,7 +116,7 @@ function displayTickets(tickets) {
         card.className = 'ticket-card';
         card.innerHTML = `
             <div>
-                <div class="ticket-title">${ticket.titulo}</div>
+                <div class="ticket-title">${truncateTitle(ticket.titulo)}</div>
                 <div class="ticket-client">Cliente: ${ticket.tipo_cliente.charAt(0).toUpperCase() + ticket.tipo_cliente.slice(1).toLowerCase()}</div>
             </div>
             <div class="urgency-badge ${ticket.urgencia_calculada.toLowerCase()}">${ticket.urgencia_calculada}</div>
@@ -108,6 +136,7 @@ async function createTicket(event) {
     // Limpa mensagens de erro anteriores
     document.getElementById('tituloError').style.display = 'none';
     document.getElementById('descricaoError').style.display = 'none';
+    document.getElementById('tipoClienteError').style.display = 'none';
 
     // Coleta valores do formulário
     const titulo = document.getElementById('titulo').value.trim();
@@ -124,6 +153,11 @@ async function createTicket(event) {
     if (!descricao) {
         document.getElementById('descricaoError').textContent = 'Descrição é obrigatória';
         document.getElementById('descricaoError').style.display = 'block';
+        hasError = true;
+    }
+    if (!tipo_cliente) {
+        document.getElementById('tipoClienteError').textContent = 'Tipo de cliente é obrigatório';
+        document.getElementById('tipoClienteError').style.display = 'block';
         hasError = true;
     }
 

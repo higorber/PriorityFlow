@@ -2,35 +2,49 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PriorityFlow - Gestor de Prioridade</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="page-container">
+    <div class="page-container" >
         <div class="main-card">
             <div class="left-column">
+                <div class="logo-header">
+                    <div class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#0078D4">
+                            <path d="M3 4h18l-7 8v6l-4 2v-8L3 4z"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <div class="logo-title">PriorityFlow</div>
+                        <div class="logo-subtitle">Ticket Triage System</div>
+                    </div>
+                </div>
                 <h2>Novo Ticket</h2>
                 <form id="ticketForm">
                     <div class="form-group">
                         <label for="titulo">Título</label>
-                        <input type="text" id="titulo" name="titulo" placeholder="Resumo do problema" required aria-label="Título do ticket">
+                        <input type="text" id="titulo" name="titulo" placeholder="Resumo do problema" maxlength="40" aria-label="Título do ticket">
+                        <div id="charCounter" class="char-counter">40 caracteres restantes</div>
                         <div class="error-message" id="tituloError"></div>
                     </div>
                     <div class="form-group">
                         <label for="descricao">Descrição</label>
-                        <textarea id="descricao" name="descricao" placeholder="Descreva o problema em detalhes..." required aria-label="Descrição do problema"></textarea>
+                        <textarea id="descricao" name="descricao" placeholder="Descreva o problema em detalhes..." aria-label="Descrição do problema"></textarea>
                         <div class="error-message" id="descricaoError"></div>
                     </div>
                     <div class="form-group">
                         <label for="tipo_cliente">Tipo de Cliente</label>
-                        <select id="tipo_cliente" name="tipo_cliente" required aria-label="Tipo de cliente">
-                            <option value="">Selecione...</option>
+                        <select id="tipo_cliente" name="tipo_cliente" aria-label="Tipo de cliente">
+                            <option value="" selected>Selecione...</option>
                             <option value="GRATUITO">Gratuito</option>
                             <option value="BASICO">Básico</option>
                             <option value="PREMIUM">Premium</option>
                         </select>
+                        <div class="error-message" id="tipoClienteError"></div>
                     </div>
                     <button type="submit" id="submitBtn">Criar Ticket</button>
                 </form>
@@ -39,7 +53,9 @@
             <div class="right-column">
                 <div class="dashboard-header">
                     <div class="header-content">
-                        <h1>Dashboard de Triagem</h1>
+                        <h1 style="font-family: 'Poppins', Arial, sans-serif; color: #0b0e18; font-weight: 800; font-size: 1.8rem; margin-bottom: 8px;">
+    Dashboard de Triagem
+  </h1>
                         <p>Crie e processe tickets para priorização automática.</p>
                     </div>
                     <button id="processBtn" role="button" aria-label="Processar fila pendente">

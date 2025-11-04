@@ -20,14 +20,14 @@ app.use((req, res, next) => {
 
 // Database connection
 const pool = new Pool({
-  host: process.env.DB_HOST || 'db',
+  host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'gestor_prioridade',
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'password',
   max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 10000,
 });
 
 // Routes
@@ -37,7 +37,18 @@ app.get('/', (req, res) => {
 
 app.get('/api/tickets', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM tickets ORDER BY created_at DESC');
+    const result = await pool.query(`
+      SELECT * FROM tickets
+      ORDER BY
+        CASE
+          WHEN status = 'PENDENTE' THEN 0
+          WHEN urgencia_calculada = 'CRITICA' THEN 4
+          WHEN urgencia_calculada = 'ALTA' THEN 3
+          WHEN urgencia_calculada = 'MEDIA' THEN 2
+          WHEN urgencia_calculada = 'BAIXA' THEN 1
+        END DESC,
+        created_at ASC
+    `);
     res.json(result.rows);
   } catch (error) {
     console.error(error);

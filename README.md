@@ -47,13 +47,19 @@ cd backend && npm test
 # Testes de Fumaça (Cypress)
 npm run cypress:open    # Interface gráfica
 npm run cypress:run     # Execução headless (recomendado)
+npx cypress run --spec cypress/e2e/smoke.cy.js --headless  # Execução específica do arquivo de fumaça
 
 # Testes E2E (Playwright) - Legado
 npx playwright install
 npx playwright test tests/e2e.spec.js
 ```
 
-**Nota sobre Cypress:** Os testes de fumaça são executados com banco de dados limpo antes de cada teste para garantir isolamento e consistência. Certifique-se de que o backend esteja rodando na porta 3000.
+**Nota sobre Cypress:** Os testes de fumaça são executados com banco de dados limpo antes de cada teste para garantir isolamento e consistência. Certifique-se de que o backend esteja rodando na porta 3000. Os testes cobrem:
+- Carregamento da página inicial
+- Criação de tickets
+- Processamento da fila pendente
+- Classificação por urgência com cores corretas
+- Validação de campos obrigatórios
 
 ---
 
@@ -86,7 +92,7 @@ npx playwright test tests/e2e.spec.js
 * Garantir feedback correto ao usuário na interface
 * Testar integração entre frontend e backend
 
-### Bugs identificados manualmente
+### Bugs identificados e corrigidos
 
 * Texto “Cen�rio” e caracteres corrompidos: Parece que o encoding do título dos tickets não está sendo tratado corretamente (acentos). Isso precisa ser corrigido para exibir “Cenário” corretamente.
 * Urgência sem destaque de cor: O ticket com urgência MEDIA não está destacando a cor. Cada nível de urgência deve ter sua cor distinta.
