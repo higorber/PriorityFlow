@@ -36,6 +36,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+/**
+ * Welcome endpoint for API health check.
+ */
 app.get('/api/welcome', (req, res) => {
   console.log(`Request received: ${req.method} ${req.path}`);
   res.json({ message: 'Welcome to the PriorityFlow API!' });
@@ -110,40 +113,35 @@ app.delete('/api/tickets/clear', async (req, res) => {
   }
 });
 
+/**
+ * Calculates the urgency level of a ticket based on description and client type.
+ * @param {string} descricao - The ticket description.
+ * @param {string} tipoCliente - The client type ('PREMIUM', 'BASICO', 'GRATUITO').
+ * @returns {string} The urgency level ('CRITICA', 'ALTA', 'MEDIA', 'BAIXA').
+ */
 function calculateUrgency(descricao, tipoCliente) {
   const desc = descricao.toLowerCase();
 
-  // Keywords
-  const critical = ['parado', 'offline', 'não funciona', 'down', 'fora do ar'];
-  const high = ['erro', 'bug', 'lento', 'lentidão', 'falha de acesso'];
-  const medium = ['dúvida', 'como fazer', 'ajuda', 'orientação'];
+  // Keywords for urgency levels
+  const keywords = {
+    critical: ['parado', 'offline', 'não funciona', 'down', 'fora do ar'],
+    high: ['erro', 'bug', 'lento', 'lentidão', 'falha de acesso'],
+    medium: ['dúvida', 'como fazer', 'ajuda', 'orientação']
+  };
 
-  let hasCritical = critical.some(word => desc.includes(word));
-  let hasHigh = high.some(word => desc.includes(word));
-  let hasMedium = medium.some(word => desc.includes(word));
+  // Determine priority based on keywords (highest priority wins)
+  const priority = keywords.critical.some(word => desc.includes(word)) ? 3 :
+                   keywords.high.some(word => desc.includes(word)) ? 2 :
+                   keywords.medium.some(word => desc.includes(word)) ? 1 : 0;
 
-  // Determine highest priority
-  let priority = 0;
-  if (hasCritical) priority = 3;
-  else if (hasHigh) priority = 2;
-  else if (hasMedium) priority = 1;
+  // Urgency matrix based on client type
+  const urgencyMatrix = {
+    PREMIUM: ['MEDIA', 'MEDIA', 'ALTA', 'CRITICA'],
+    BASICO: ['BAIXA', 'MEDIA', 'ALTA', 'ALTA'],
+    GRATUITO: ['BAIXA', 'BAIXA', 'MEDIA', 'MEDIA']
+  };
 
-  // Matrix based on client type
-  switch (tipoCliente) {
-    case 'PREMIUM':
-      if (priority === 3) return 'CRITICA';
-      if (priority === 2) return 'ALTA';
-      return 'MEDIA';
-    case 'BASICO':
-      if (priority === 3) return 'ALTA';
-      if (priority === 2) return 'MEDIA';
-      return 'BAIXA';
-    case 'GRATUITO':
-      if (priority === 3) return 'MEDIA';
-      return 'BAIXA';
-    default:
-      return 'BAIXA';
-  }
+  return urgencyMatrix[tipoCliente]?.[priority] || 'BAIXA';
 }
 
 module.exports = { calculateUrgency };
