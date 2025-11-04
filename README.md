@@ -42,7 +42,7 @@ docker-compose down -v
 
 ```bash
 # Testes unitários (Backend)
-cd backend && npm test
+cd backend; npm test
 
 # Testes de Fumaça (Cypress)
 npm run cypress:open    # Interface gráfica

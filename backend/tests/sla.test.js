@@ -1,5 +1,8 @@
 const { calculateUrgency } = require('../server');
 
+// Set NODE_ENV to test to use port 3005
+process.env.NODE_ENV = 'test';
+
 describe('SLA Calculation', () => {
   test('Premium - Crítica (Palavra-chave \'parado\')', () => {
     const result = calculateUrgency('Meu sistema está completamente parado e não consigo trabalhar.', 'PREMIUM');
