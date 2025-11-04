@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:15
+    container_name: priorityflow-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -9,9 +10,11 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # 👈 monta o script de inicialização
 
   backend:
     build: ./backend
+    container_name: priorityflow-backend
     ports:
       - "3000:3000"
     environment:

@@ -28,11 +28,17 @@ const pool = new Pool({
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
+  client_encoding: 'utf8',
 });
 
 // Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/api/welcome', (req, res) => {
+  console.log(`Request received: ${req.method} ${req.path}`);
+  res.json({ message: 'Welcome to the PriorityFlow API!' });
 });
 
 app.get('/api/tickets', async (req, res) => {
@@ -58,6 +64,9 @@ app.get('/api/tickets', async (req, res) => {
 
 app.post('/api/tickets', async (req, res) => {
   const { titulo, descricao, tipo_cliente } = req.body;
+  if (!titulo || !descricao || !tipo_cliente) {
+    return res.status(400).json({ error: 'Campos obrigatórios: titulo, descricao, tipo_cliente' });
+  }
   try {
     const result = await pool.query(
       'INSERT INTO tickets (titulo, descricao, tipo_cliente) VALUES ($1, $2, $3) RETURNING *',

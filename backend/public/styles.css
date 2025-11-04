@@ -791,7 +791,7 @@ button {
 }
 
 .urgency-badge.alta {
-    background-color: var(--tag-high);
+    background-color: #ff9b56;
     color: var(--text-dark);
 }
 

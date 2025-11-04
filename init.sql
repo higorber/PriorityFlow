@@ -7,3 +7,6 @@ CREATE TABLE IF NOT EXISTS tickets (
     urgencia_calculada VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Set database encoding to UTF-8
+SET client_encoding = 'UTF8';
