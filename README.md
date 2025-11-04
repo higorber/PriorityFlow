@@ -146,6 +146,26 @@ Feature: Gestão de Tickets
 
 ---
 
-[https://github.com/SENAI-SD/qa-junior-02521-2025-472.871.838-70]
+# Relatório SonarQube / SonarCloud
+
+Foi realizada análise de qualidade de código utilizando o SonarCloud.  
+Resumo da análise:
+
+- Linhas de código: 1,6 mil  
+- Confiabilidade: 4 questões em aberto  
+- Manutenibilidade: 10 questões em aberto  
+- Duplicações: 5,7%  
+- Pontos de acesso de segurança: 5  
+
+**Prioridade de ajustes**:  
+1. Corrigir questões de confiabilidade (impacto médio, melhora a robustez)  
+2. Revisar problemas de manutenibilidade (impacto médio, melhora manutenção futura)  
+3. Avaliar duplicações e pontos de acesso de segurança (baixo esforço, melhora qualidade geral)
+
+> Observação: Nenhum ajuste foi aplicado no código; análise realizada apenas para documentação.
+
+---
+
+[PriorityFlow](https://github.com/SENAI-SD/qa-junior-02521-2025-472.871.838-70)
 
 ---
