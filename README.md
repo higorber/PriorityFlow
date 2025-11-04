@@ -130,7 +130,6 @@ Feature: Gestão de Tickets
   * Logs e monitoramento de backend
   * Requisitos não atendidos:
 
-  * [RQNF10] SonarQube não executado (opcional)
   * [RQNF7] Testes de integração backend (opcional)
 
 ---
