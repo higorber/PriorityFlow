@@ -88,7 +88,8 @@
       { title: 'Premium Medium', desc: 'Preciso de ajuda', type: 'PREMIUM', expectedUrgency: 'MEDIA', expectedColor: 'rgb(255, 193, 7)' }
     ]
 
-    tickets.forEach(ticket => {
+    // FIX: Replace forEach with for...of for better performance and readability
+    for (const ticket of tickets) {
       cy.get('#titulo').type(ticket.title)
       cy.get('#descricao').type(ticket.desc)
       cy.get('#tipo_cliente').select(ticket.type)
@@ -96,7 +97,7 @@
       cy.wait('@createTicket')
       cy.wait(2000)
       cy.get('#message').should('contain', 'Ticket criado com sucesso!')
-    })
+    }
 
     // Process queue
     cy.get('#processBtn').click()
@@ -107,9 +108,9 @@
     // Verify all tickets are classified
     cy.get('#classifiedList .ticket-card').should('have.length', tickets.length)
 
-    // Sort tickets by priority for checking order
+    // FIX: Move sort operation to separate line for better readability and performance
     const priorityOrder = { 'CRITICA': 4, 'ALTA': 3, 'MEDIA': 2, 'BAIXA': 1 };
-    const sortedTickets = tickets.sort((a, b) => {
+    const sortedTickets = tickets.slice().sort((a, b) => {
       const priorityA = priorityOrder[a.expectedUrgency] || 0;
       const priorityB = priorityOrder[b.expectedUrgency] || 0;
       return priorityB - priorityA;

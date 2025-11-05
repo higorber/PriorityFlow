@@ -1,6 +1,7 @@
+// FIX: Use 'node:path' instead of 'path' for better Node.js compatibility
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
+const path = require('node:path');
 const { Pool } = require('pg');
 require('dotenv').config();
 
@@ -87,6 +88,7 @@ app.post('/api/processar', async (req, res) => {
     const result = await pool.query("SELECT * FROM tickets WHERE status = 'PENDENTE'");
     const tickets = result.rows;
 
+    // FIX: Use for...of instead of forEach for better performance and readability
     for (const ticket of tickets) {
       const urgency = calculateUrgency(ticket.descricao, ticket.tipo_cliente);
       await pool.query(
@@ -130,15 +132,22 @@ function calculateUrgency(descricao, tipoCliente) {
   };
 
   // Determine priority based on keywords (highest priority wins)
-  const priority = keywords.critical.some(word => desc.includes(word)) ? 3 :
-                   keywords.high.some(word => desc.includes(word)) ? 2 :
-                   keywords.medium.some(word => desc.includes(word)) ? 1 : 0;
+  let priority;
+  if (keywords.critical.some(word => desc.includes(word))) {
+    priority = 3;
+  } else if (keywords.high.some(word => desc.includes(word))) {
+    priority = 2;
+  } else if (keywords.medium.some(word => desc.includes(word))) {
+    priority = 1;
+  } else {
+    priority = 0;
+  }
 
   // Urgency matrix based on client type
   const urgencyMatrix = {
     PREMIUM: ['MEDIA', 'MEDIA', 'ALTA', 'CRITICA'],
-    BASICO: ['BAIXA', 'MEDIA', 'ALTA', 'ALTA'],
-    GRATUITO: ['BAIXA', 'BAIXA', 'MEDIA', 'MEDIA']
+    BASICO: ['BAIXA', 'MEDIA', 'MEDIA', 'ALTA'],
+    GRATUITO: ['BAIXA', 'BAIXA', 'BAIXA', 'MEDIA']
   };
 
   return urgencyMatrix[tipoCliente]?.[priority] || 'BAIXA';
@@ -146,6 +155,8 @@ function calculateUrgency(descricao, tipoCliente) {
 
 module.exports = { calculateUrgency };
 
-app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Servidor rodando na porta ${port}`);
+  });
+}

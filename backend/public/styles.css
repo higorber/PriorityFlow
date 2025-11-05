@@ -19,8 +19,8 @@ body {
     justify-content: center;
     align-items: flex-start;
     max-width: 1200px;
-    margin-top: 20x;  
-    padding-top: 5px;  
+    margin-top: 20px;
+    padding-top: 5px;
 }
 
 .main-card {
@@ -401,11 +401,6 @@ button {
     }
 }
 
-/* Reset and base styles */
-* {
-    box-sizing: border-box;
-}
-
 /* CSS Variables */
 :root {
     --white: #FFFFFF;
@@ -445,7 +440,7 @@ body {
     margin-top: 10px;  
     padding-top: 10px;  
     margin-bottom: 10px;   
-    padding-bottom: px;    
+    padding-bottom: 10px;
 }
 
 .main-card {

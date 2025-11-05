@@ -8,6 +8,18 @@
  * - Tickets classificados são movidos para "Fila Classificada" com badges visuais
  */
 
+/**
+ * Função auxiliar para truncar título
+ * @param {string} title - Título a ser truncado
+ * @returns {string} Título truncado se necessário
+ */
+function truncateTitle(title) {
+    if (title.length > 23) {
+        return title.substring(0, 23) + '...';
+    }
+    return title;
+}
+
 // Inicialização da aplicação quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
     // Carrega tickets existentes via API
@@ -58,16 +70,16 @@ function displayTickets(tickets) {
     pendingList.innerHTML = '';
     classifiedList.innerHTML = '';
 
-    // Ordena tickets por data de criação (mais recentes primeiro)
-    const sortedTickets = tickets.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    // FIX: Move sort operation to separate line for better readability and performance
+    const sortedTickets = [...tickets].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     // Filtra tickets por status
     const pendingTickets = sortedTickets.filter(ticket => ticket.status === 'PENDENTE');
     const classifiedTickets = sortedTickets.filter(ticket => ticket.status === 'CLASSIFICADO');
 
-    // Ordena tickets classificados por prioridade (CRITICA > ALTA > MEDIA > BAIXA) e depois por data de criação (mais antigos primeiro)
+    // FIX: Move sort operation to separate line for better readability and performance
     const priorityOrder = { 'CRITICA': 4, 'ALTA': 3, 'MEDIA': 2, 'BAIXA': 1 };
-    classifiedTickets.sort((a, b) => {
+    const sortedClassifiedTickets = [...classifiedTickets].sort((a, b) => {
         const priorityA = priorityOrder[a.urgencia_calculada] || 0;
         const priorityB = priorityOrder[b.urgencia_calculada] || 0;
         if (priorityA !== priorityB) {
@@ -89,16 +101,10 @@ function displayTickets(tickets) {
         `;
     }
 
-    // Função auxiliar para truncar título
-    function truncateTitle(title) {
-        if (title.length > 23) {
-            return title.substring(0, 23) + '...';
-        }
-        return title;
-    }
+
 
     // Renderiza tickets pendentes (sem badge de prioridade)
-    pendingTickets.forEach(ticket => {
+    for (const ticket of pendingTickets) {
         const card = document.createElement('div');
         card.className = 'ticket-card';
         card.innerHTML = `
@@ -108,10 +114,11 @@ function displayTickets(tickets) {
             </div>
         `;
         pendingList.appendChild(card);
-    });
+    }
 
+    // FIX: Use for...of instead of forEach for better performance and readability
     // Renderiza tickets classificados (com badge de prioridade)
-    classifiedTickets.forEach(ticket => {
+    for (const ticket of sortedClassifiedTickets) {
         const card = document.createElement('div');
         card.className = 'ticket-card';
         card.innerHTML = `
@@ -122,7 +129,7 @@ function displayTickets(tickets) {
             <div class="urgency-badge ${ticket.urgencia_calculada.toLowerCase()}">${ticket.urgencia_calculada}</div>
         `;
         classifiedList.appendChild(card);
-    });
+    }
 }
 
 /**
