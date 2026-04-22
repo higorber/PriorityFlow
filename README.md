@@ -1,6 +1,5 @@
 # PriorityFlow - Gestor de Prioridade
 
-**Projeto desenvolvido para a Avaliação Prática do Processo Seletivo 02521/2025 - Analista de Qualidade de Software - Júnior**
 
 ## 1. Configuração e Execução
 
